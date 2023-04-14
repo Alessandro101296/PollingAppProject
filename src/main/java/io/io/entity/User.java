@@ -1,11 +1,11 @@
-package io.io.Entity;
+package io.io.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.NaturalId;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Users")
@@ -16,6 +16,7 @@ public class User {
     private long id;
 
     @NotBlank
+    @NaturalId
     private String name;
 
 
@@ -30,11 +31,9 @@ public class User {
     @NotBlank
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Poll> pollList = new ArrayList();
 
     public User() {
 
@@ -47,6 +46,9 @@ public class User {
         this.password = password;
     }
 
+    public List<Poll> getPollList() {
+        return pollList;
+    }
     public long getId() {
         return id;
     }
@@ -87,11 +89,4 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
 }

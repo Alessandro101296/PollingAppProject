@@ -1,10 +1,10 @@
-package io.io.Entity;
+package io.io.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name="Choises")
+@Table(name = "Choises")
 public class Choice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,15 +12,14 @@ public class Choice {
 
     @NotBlank
     private String text;
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Poll poll;
 
     public Choice() {
     }
 
-    public Choice(String text, Poll poll) {
+    public Choice(String text) {
         this.text = text;
-        this.poll = poll;
     }
 
     public long getId() {
