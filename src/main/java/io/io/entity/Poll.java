@@ -1,9 +1,13 @@
 package io.io.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -19,12 +23,15 @@ public class Poll {
 
     @NotBlank
     private String question;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "poll")
+    @OneToMany(mappedBy = "poll")
+    @Fetch(FetchMode.SELECT)
     @Size(min = 2, max = 6)
+    @JsonManagedReference
     private List<Choice> choiceList = new ArrayList();
 
-    private Instant expirationDateTime;
+    private Date expirationDateTime;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonBackReference
     private User user;
 
     public long getId() {
@@ -55,11 +62,18 @@ public class Poll {
         return choiceList;
     }
 
-    public Instant getExpirationDateTime() {
+    public Date getExpirationDateTime() {
         return expirationDateTime;
     }
 
-    public void setExpirationDateTime(Instant expirationDateTime) {
+    public void setExpirationDateTime(Date expirationDateTime) {
         this.expirationDateTime = expirationDateTime;
+    }
+    public void addChoice(Choice choice){
+        choice.setPoll(this);
+        this.choiceList.add(choice);
+    }
+    public void setChoiceList(List<Choice> choiceList){
+        this.choiceList=choiceList;
     }
 }

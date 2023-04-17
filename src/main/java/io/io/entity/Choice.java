@@ -1,5 +1,6 @@
 package io.io.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -13,6 +14,7 @@ public class Choice {
     @NotBlank
     private String text;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonBackReference
     private Poll poll;
 
     public Choice() {

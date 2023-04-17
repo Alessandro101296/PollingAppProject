@@ -1,5 +1,6 @@
 package io.io.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.NaturalId;
@@ -33,6 +34,8 @@ public class User {
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonManagedReference
+
     private List<Poll> pollList = new ArrayList();
 
     public User() {
