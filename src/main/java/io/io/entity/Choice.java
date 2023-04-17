@@ -1,8 +1,13 @@
 package io.io.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Choises")
@@ -16,7 +21,9 @@ public class Choice {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonBackReference
     private Poll poll;
-
+    @OneToMany(mappedBy = "choice")
+    @JsonManagedReference
+    private List<Vote> votes=new ArrayList<>();
     public Choice() {
     }
 

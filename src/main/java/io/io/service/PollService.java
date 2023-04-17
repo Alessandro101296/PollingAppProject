@@ -28,8 +28,7 @@ public class PollService {
         this.choiceRepository=choiceRepository;
     }
 
-    public String createNewPoll(CreateNewPollRequest pollRequest) throws JsonProcessingException {
-        ObjectMapper mapper=new ObjectMapper();
+    public PollIdResponse createNewPoll(CreateNewPollRequest pollRequest){
         Optional<User> findedUser=userRepository.findByUsername(pollRequest.getUsername());
         Poll newPoll=new Poll();
         if(findedUser.isPresent()){
@@ -44,20 +43,18 @@ public class PollService {
             pollRepository.save(newPoll);
         }
         PollIdResponse response=new PollIdResponse(newPoll.getId());
-        return mapper.writeValueAsString(response);
-
+        return response;
     }
-    public String findPollByUser(long userId) throws JsonProcessingException {
+    public List<Poll> findPollByUser(long userId) {
         ObjectMapper mapper=new ObjectMapper();
         User user=userRepository.findById(userId).get();
         List<Poll> pollList= user.getPollList();
-        return mapper.writeValueAsString(pollList);
+        return pollList;
     }
-    public String findPollByExpirationTime(int numberOfDays) throws  JsonProcessingException{
-        ObjectMapper mapper=new ObjectMapper();
+    public List<Poll> findPollByExpirationTime(int numberOfDays){
         Date instant=Date.from(Instant.now().plus(Duration.ofDays(numberOfDays)));
         List<Poll> pollList=pollRepository.findByExpirationDateTimeIsLessThan(instant).get();
-        return mapper.writeValueAsString(pollList);
+        return pollList;
     }
 
 }

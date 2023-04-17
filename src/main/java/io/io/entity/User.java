@@ -1,5 +1,7 @@
 package io.io.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -22,6 +24,7 @@ public class User {
 
 
     @NotBlank
+    @NaturalId
     private String username;
 
 
@@ -35,8 +38,11 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
-
     private List<Poll> pollList = new ArrayList();
+
+    @OneToMany(fetch=FetchType.LAZY,mappedBy = "user")
+    @JsonIgnore
+    private List<Vote> votes=new ArrayList<>();
 
     public User() {
 

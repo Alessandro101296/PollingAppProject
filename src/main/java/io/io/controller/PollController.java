@@ -4,11 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.io.dto.CreateNewPollRequest;
 import io.io.dto.FindPollByUserRequest;
 
+import io.io.dto.PollIdResponse;
+import io.io.entity.Poll;
 import io.io.service.ChoiceService;
 import io.io.service.PollService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/poll")
@@ -20,20 +23,20 @@ public class PollController {
 
     @PostMapping("/create")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public String createNewPoll(@RequestBody CreateNewPollRequest pullRequest) throws JsonProcessingException {
-        String response=this.pollService.createNewPoll((pullRequest));
+    public PollIdResponse createNewPoll(@RequestBody CreateNewPollRequest pullRequest){
+        PollIdResponse response=this.pollService.createNewPoll((pullRequest));
         return response;
     }
-    @PostMapping("/findbyuser")
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public String findByUser(@RequestBody FindPollByUserRequest findPollByUserRequest) throws JsonProcessingException {
-        String response=this.pollService.findPollByUser(findPollByUserRequest.getUserId());
+    @GetMapping("/findbyuser")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<Poll> findByUser(@RequestParam (value = "userid") long userId){
+        List<Poll> response=pollService.findPollByUser(userId);
         return response;
     }
-    @PostMapping("/findbyexpr")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public String findbyExpirationTime(@RequestParam (value = "days") int days) throws JsonProcessingException{
-        String response=this.pollService.findPollByExpirationTime(days);
+    @GetMapping("/findbyexpr")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Poll> findbyExpirationTime(@RequestParam (value = "days") int days) {
+        List<Poll> response=pollService.findPollByExpirationTime(days);
         return response;
     }
 
