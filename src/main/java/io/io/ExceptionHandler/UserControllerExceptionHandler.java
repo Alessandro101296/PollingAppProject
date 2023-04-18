@@ -14,6 +14,6 @@ public class UserControllerExceptionHandler extends ResponseEntityExceptionHandl
     @ExceptionHandler(ExistingUsernameException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     protected void HandleExistingUsernameException(ExistingUsernameException exception){
-        return;
+        return ;
     }
 }

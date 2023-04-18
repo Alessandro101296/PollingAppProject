@@ -53,4 +53,7 @@ public class Vote {
         return user;
     }
 
+    public void setChoice(Choice choice) {
+        this.choice = choice;
+    }
 }

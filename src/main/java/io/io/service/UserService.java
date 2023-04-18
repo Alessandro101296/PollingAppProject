@@ -21,7 +21,7 @@ public class UserService {
 
     public UserIdResponse createNewUser(CreateNewUserRequest createNewUserRequest) throws ExistingUsernameException {
         if(userRepository.findByUsername(createNewUserRequest.getUsername()).isPresent()){
-            throw new ExistingUsernameException();
+            throw new ExistingUsernameException(createNewUserRequest.getUsername());
         }
         User createdUser=userRepository.save(userMapper.NewUserRequestToUser(createNewUserRequest));
         UserIdResponse response=userMapper.userToUserIdResponse(createdUser);
