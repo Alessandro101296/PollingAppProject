@@ -1,4 +1,4 @@
-package io.io.dto;
+package io.io.dto.Request;
 
 import io.io.entity.Choice;
 import io.io.entity.Poll;

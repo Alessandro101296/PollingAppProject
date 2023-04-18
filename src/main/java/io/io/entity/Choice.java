@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,8 @@ public class Choice {
     @JsonBackReference
     private Poll poll;
     @OneToMany(mappedBy = "choice")
-    @JsonManagedReference
+    @Fetch(FetchMode.SELECT)
+    @JsonIgnore
     private List<Vote> votes=new ArrayList<>();
     public Choice() {
     }

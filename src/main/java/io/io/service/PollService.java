@@ -1,9 +1,10 @@
 package io.io.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.io.dto.CreateNewPollRequest;
-import io.io.dto.PollIdResponse;
+import io.io.Exception.NonExistingUser;
+import io.io.Mapper.PollMapper;
+import io.io.dto.Request.CreateNewPollRequest;
+import io.io.dto.Response.PollIdResponse;
 import io.io.entity.Choice;
 import io.io.entity.Poll;
 import io.io.entity.User;
@@ -22,28 +23,27 @@ public class PollService {
     private UserRepository userRepository;
     private PollRepository pollRepository;
     private ChoiceRepository choiceRepository;
-    public PollService(UserRepository userRepository,PollRepository pollRepository,ChoiceRepository choiceRepository){
+    private PollMapper pollMapper;
+    public PollService(UserRepository userRepository,PollRepository pollRepository,ChoiceRepository choiceRepository,PollMapper pollMapper){
         this.userRepository=userRepository;
         this.pollRepository=pollRepository;
         this.choiceRepository=choiceRepository;
+        this.pollMapper=pollMapper;
     }
 
-    public PollIdResponse createNewPoll(CreateNewPollRequest pollRequest){
-        Optional<User> findedUser=userRepository.findByUsername(pollRequest.getUsername());
-        Poll newPoll=new Poll();
-        if(findedUser.isPresent()){
-            newPoll.setUser(findedUser.get());
-            newPoll.setQuestion(pollRequest.getQuestion());
-            List<Choice> choiceList=pollRequest.getChoiceList();
-            for(Choice choice:choiceList){
-                newPoll.addChoice(choice);
-            }
-            Date instant=Date.from(Instant.now().plus(Duration.ofDays(pollRequest.getNumberOfDays())));
-            newPoll.setExpirationDateTime(instant);
-            pollRepository.save(newPoll);
+    public PollIdResponse createNewPoll(CreateNewPollRequest pollRequest) throws NonExistingUser {
+        Optional<User> referencedUser=userRepository.findByUsername(pollRequest.getUsername());
+        if(referencedUser.isPresent()){
+            Poll poll=pollMapper.NewPollRequestToPoll(pollRequest);
+            poll.setUser(referencedUser.get());
+            Poll createdPoll=pollRepository.save(poll);
+            PollIdResponse response=pollMapper.pollToPollIdResponse(createdPoll);
+            return response;
         }
-        PollIdResponse response=new PollIdResponse(newPoll.getId());
-        return response;
+        else{
+            throw new NonExistingUser();
+        }
+
     }
     public List<Poll> findPollByUser(long userId) {
         ObjectMapper mapper=new ObjectMapper();

@@ -1,10 +1,9 @@
 package io.io.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.io.dto.CreateNewChoicesRequest;
+import io.io.dto.Request.CreateNewChoicesRequest;
 import io.io.service.ChoiceService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,7 +16,7 @@ public class ChoiceController {
     }
 
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.CREATED)
     public void createChoices(@RequestBody CreateNewChoicesRequest newChoises) throws JsonProcessingException {
         this.choiceService.createNewChoises(newChoises);
     }

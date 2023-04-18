@@ -1,7 +1,7 @@
 package io.io.controller;
 
 
-import io.io.dto.AddNewVoteRequest;
+import io.io.dto.Request.AddNewVoteRequest;
 import io.io.service.VoteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

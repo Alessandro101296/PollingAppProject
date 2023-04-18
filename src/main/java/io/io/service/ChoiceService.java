@@ -1,8 +1,7 @@
 package io.io.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.io.dto.CreateNewChoicesRequest;
+import io.io.dto.Request.CreateNewChoicesRequest;
 import io.io.entity.Choice;
 import io.io.entity.Poll;
 import io.io.repository.ChoiceRepository;

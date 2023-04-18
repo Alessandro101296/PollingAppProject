@@ -1,10 +1,9 @@
 package io.io.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import io.io.dto.CreateNewPollRequest;
-import io.io.dto.FindPollByUserRequest;
+import io.io.Exception.NonExistingUser;
+import io.io.dto.Request.CreateNewPollRequest;
 
-import io.io.dto.PollIdResponse;
+import io.io.dto.Response.PollIdResponse;
 import io.io.entity.Poll;
 import io.io.service.ChoiceService;
 import io.io.service.PollService;
@@ -22,8 +21,8 @@ public class PollController {
     }
 
     @PostMapping("/create")
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public PollIdResponse createNewPoll(@RequestBody CreateNewPollRequest pullRequest){
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public PollIdResponse createNewPoll(@RequestBody CreateNewPollRequest pullRequest) throws NonExistingUser {
         PollIdResponse response=this.pollService.createNewPoll((pullRequest));
         return response;
     }

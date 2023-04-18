@@ -1,6 +1,6 @@
 package io.io.service;
 
-import io.io.dto.AddNewVoteRequest;
+import io.io.dto.Request.AddNewVoteRequest;
 import io.io.entity.Choice;
 import io.io.entity.Poll;
 import io.io.entity.User;
