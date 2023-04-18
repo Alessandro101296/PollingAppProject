@@ -1,4 +1,4 @@
-package io.io.PollingApp;
+package io.io;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
