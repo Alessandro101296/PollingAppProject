@@ -21,11 +21,9 @@ public class Choice {
     @NotBlank
     private String text;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonBackReference
     private Poll poll;
     @OneToMany(mappedBy = "choice")
     @Fetch(FetchMode.SELECT)
-    @JsonIgnore
     private List<Vote> votes=new ArrayList<>();
     public Choice() {
     }
@@ -58,5 +56,11 @@ public class Choice {
         this.poll = poll;
     }
 
+    public List<Vote> getVotes() {
+        return votes;
+    }
 
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
+    }
 }

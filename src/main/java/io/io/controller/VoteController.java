@@ -1,6 +1,9 @@
 package io.io.controller;
 
 
+import io.io.Exception.NonExistingPoll;
+import io.io.Exception.NonExistingUser;
+import io.io.Exception.NonExistingVote;
 import io.io.Exception.WrongUserException;
 import io.io.dto.Request.AddNewVoteRequest;
 import io.io.dto.Request.RemoveVoteRequest;
@@ -20,18 +23,18 @@ public class VoteController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addNewVote(@RequestBody AddNewVoteRequest voteRequest){
+    public void addNewVote(@RequestBody AddNewVoteRequest voteRequest) throws NonExistingUser, NonExistingPoll {
         voteService.addVote(voteRequest);
 
     }
     @DeleteMapping("/remove")
     @ResponseStatus(HttpStatus.OK)
-    public void removeVote(@RequestBody RemoveVoteRequest removeVoteRequest) throws WrongUserException {
+    public void removeVote(@RequestBody RemoveVoteRequest removeVoteRequest) throws WrongUserException, NonExistingVote {
         voteService.removeVote(removeVoteRequest);
     }
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.OK)
-    public void updateVote(@RequestBody UpdateVoteRequest updateVoteRequest) throws WrongUserException {
+    public void updateVote(@RequestBody UpdateVoteRequest updateVoteRequest) throws WrongUserException, NonExistingVote {
         voteService.UpdateVote(updateVoteRequest);
     }
 

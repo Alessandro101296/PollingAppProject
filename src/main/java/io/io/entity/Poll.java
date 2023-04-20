@@ -26,12 +26,12 @@ public class Poll {
     @OneToMany(mappedBy = "poll")
     @Fetch(FetchMode.SELECT)
     @Size(min = 2, max = 6)
-    @JsonManagedReference
+
     private List<Choice> choiceList = new ArrayList();
 
     private Date expirationDateTime;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonBackReference
+
     private User user;
 
     public long getId() {

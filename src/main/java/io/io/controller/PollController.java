@@ -1,8 +1,11 @@
 package io.io.controller;
 
-import io.io.Exception.NonExistingUser;
+import io.io.Exception.*;
+import io.io.dto.PollModel;
 import io.io.dto.Request.CreateNewPollRequest;
 
+import io.io.dto.Request.DeletePollRequest;
+import io.io.dto.Request.ModifyChoicesPollRequest;
 import io.io.dto.Response.PollIdResponse;
 import io.io.entity.Poll;
 import io.io.service.ChoiceService;
@@ -28,15 +31,24 @@ public class PollController {
     }
     @GetMapping("/findbyuser")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<Poll> findByUser(@RequestParam (value = "userid") long userId){
-        List<Poll> response=pollService.findPollByUser(userId);
+    public List<PollModel> findByUser(@RequestParam (value = "userid") long userId){
+        List<PollModel> response=pollService.findPollByUser(userId);
         return response;
     }
     @GetMapping("/findbyexpr")
     @ResponseStatus(HttpStatus.OK)
-    public List<Poll> findbyExpirationTime(@RequestParam (value = "days") int days) {
-        List<Poll> response=pollService.findPollByExpirationTime(days);
+    public List<PollModel> findbyExpirationTime(@RequestParam (value = "days") int days) {
+        List<PollModel> response=pollService.findPollByExpirationTime(days);
         return response;
     }
-
+    @PutMapping("/update")
+    @ResponseStatus(HttpStatus.OK)
+    public void updatePollChoice(@RequestBody ModifyChoicesPollRequest modifyChoicesPollRequest) throws NonExistingUser, PollNotAssociatedToUser, ChoiceNotAssociatedToPoll, NonExistingPoll, NonExistingChoice {
+        pollService.modifyPollChoice(modifyChoicesPollRequest);
+    }
+    @DeleteMapping("/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public void deletePoll(@RequestBody DeletePollRequest deletePollRequest) throws PollNotAssociatedToUser, NonExistingUser, NonExistingPoll {
+        pollService.deletePoll(deletePollRequest);
+    }
 }

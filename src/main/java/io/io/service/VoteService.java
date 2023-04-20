@@ -1,5 +1,8 @@
 package io.io.service;
 
+import io.io.Exception.NonExistingPoll;
+import io.io.Exception.NonExistingUser;
+import io.io.Exception.NonExistingVote;
 import io.io.Exception.WrongUserException;
 import io.io.dto.Request.AddNewVoteRequest;
 import io.io.dto.Request.RemoveVoteRequest;
@@ -13,6 +16,9 @@ import io.io.repository.PollRepository;
 import io.io.repository.UserRepository;
 import io.io.repository.VoteRepository;
 import org.springframework.stereotype.Service;
+
+import javax.swing.text.html.Option;
+import java.util.Optional;
 
 @Service
 public class VoteService {
@@ -28,32 +34,57 @@ public class VoteService {
         this.voteRepository=voteRepository;
     }
 
-    public void addVote(AddNewVoteRequest voteRequest){
-        User user=userRepository.findById(voteRequest.getUserid()).get();
-        Poll poll=pollRepository.findById(voteRequest.getPollid()).get();
-        Choice choice=choiceRepository.findById(voteRequest.getChoiceid()).get();
-        Vote newVote=new Vote(poll,choice,user);
-        voteRepository.save(newVote);
+    public void addVote(AddNewVoteRequest voteRequest) throws NonExistingUser, NonExistingPoll {
+        Optional<User> user=userRepository.findById(voteRequest.getUserid());
+        if(user.isPresent()){
+            User retriviedUser=user.get();
+            Optional<Poll> poll=pollRepository.findById(voteRequest.getPollid());
+            if(poll.isPresent()){
+                Poll retriviedPoll=poll.get();
+                Choice choice=choiceRepository.findById(voteRequest.getChoiceid()).get();
+                Vote newVote=new Vote(retriviedPoll,choice,retriviedUser);
+                voteRepository.save(newVote);
+            }else{
+                throw new NonExistingPoll();
+            }
+
+        }
+        else{
+            throw new NonExistingUser();
+        }
+
     }
 
-    public void removeVote(RemoveVoteRequest removeVoteRequest) throws WrongUserException {
-        Vote vote=voteRepository.findById(removeVoteRequest.getVoteId()).get();
-        if(vote.getUser().getId()==removeVoteRequest.getUserid()){
-            voteRepository.delete(vote);
+    public void removeVote(RemoveVoteRequest removeVoteRequest) throws WrongUserException, NonExistingVote {
+        Optional<Vote> vote=voteRepository.findById(removeVoteRequest.getVoteId());
+        if(vote.isPresent()){
+            Vote retriviedVote=vote.get();
+            if(retriviedVote.getUser().getId()==removeVoteRequest.getUserid()){
+                voteRepository.delete(retriviedVote);
+            }
+            else {
+                throw new WrongUserException();
+            }
+        }else{
+            throw new NonExistingVote();
         }
-        else {
-            throw new WrongUserException();
-        }
+
     }
-    public void UpdateVote(UpdateVoteRequest updateVoteRequest) throws WrongUserException {
-        Vote vote=voteRepository.findById(updateVoteRequest.getVoteId()).get();
-        if(vote.getUser().getId()==updateVoteRequest.getUserId()){
-            vote.setChoice(choiceRepository.findById(updateVoteRequest.getNewChoiceId()).get());
-            voteRepository.save(vote);
+    public void UpdateVote(UpdateVoteRequest updateVoteRequest) throws WrongUserException, NonExistingVote {
+        Optional<Vote> vote=voteRepository.findById(updateVoteRequest.getVoteId());
+        if(vote.isPresent()){
+            Vote retriviedVote=vote.get();
+            if(retriviedVote.getUser().getId()==updateVoteRequest.getUserId()){
+                retriviedVote.setChoice(choiceRepository.findById(updateVoteRequest.getNewChoiceId()).get());
+                voteRepository.save(retriviedVote);
+            }
+            else {
+                throw new WrongUserException();
+            }
+        }else{
+            throw new NonExistingVote();
         }
-        else {
-            throw new WrongUserException();
-        }
+
     }
 
 }

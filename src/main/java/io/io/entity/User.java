@@ -19,7 +19,6 @@ public class User {
     private long id;
 
     @NotBlank
-    @NaturalId
     private String name;
 
 
@@ -37,11 +36,9 @@ public class User {
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    @JsonManagedReference
     private List<Poll> pollList = new ArrayList();
 
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "user")
-    @JsonIgnore
     private List<Vote> votes=new ArrayList<>();
 
     public User() {
