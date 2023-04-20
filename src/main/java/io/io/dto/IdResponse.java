@@ -1,10 +1,12 @@
-package io.io.dto.Response;
+package io.io.dto;
 
-public class UserIdResponse {
-
+public class IdResponse {
     private long id;
 
-    public UserIdResponse(long id) {
+    public IdResponse() {
+    }
+
+    public IdResponse(long id) {
         this.id = id;
     }
 

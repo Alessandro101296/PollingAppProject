@@ -1,37 +1,27 @@
-package io.io.entity;
+package io.io.dto;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import org.hibernate.annotations.NaturalId;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
 
-@Entity
-@Table(name = "User")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+public class UserModel {
     private long id;
 
-    @Column(unique = true)
-    @NotBlank
     private String username;
 
-    @Column(unique = true)
-    @NotBlank
     private String email;
 
     private String name;
 
-    @OneToMany(mappedBy = "user")
-    private List<Poll> pollList;
-    @OneToMany(mappedBy = "user")
-    private List<Vote> voteList;
+    private List<PollModel> pollList;
 
-    public User() {
+    private List<VoteModel> voteList;
+
+    public UserModel() {
     }
 
-    public User(long id, String username, String email, String name, List<Poll> pollList, List<Vote> voteList) {
+    public UserModel(long id, String username, String email, String name, List<PollModel> pollList, List<VoteModel> voteList) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -72,19 +62,19 @@ public class User {
         this.name = name;
     }
 
-    public List<Poll> getPollList() {
+    public List<PollModel> getPollList() {
         return pollList;
     }
 
-    public void setPollList(List<Poll> pollList) {
+    public void setPollList(List<PollModel> pollList) {
         this.pollList = pollList;
     }
 
-    public List<Vote> getVoteList() {
+    public List<VoteModel> getVoteList() {
         return voteList;
     }
 
-    public void setVoteList(List<Vote> voteList) {
+    public void setVoteList(List<VoteModel> voteList) {
         this.voteList = voteList;
     }
 }

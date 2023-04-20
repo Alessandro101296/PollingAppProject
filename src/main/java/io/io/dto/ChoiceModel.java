@@ -1,30 +1,21 @@
-package io.io.entity;
-
-import jakarta.persistence.*;
+package io.io.dto;
 
 import java.util.List;
 
-@Entity
-@Table(name = "Choice")
-public class Choice {
+public class ChoiceModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String text;
 
-    @ManyToOne
-    @JoinColumn(name = "pollId")
-    private Poll poll;
+    private PollModel poll;
 
-    @OneToMany(mappedBy = "choice")
-    private List<Vote> listVotes;
+    private List<VoteModel> listVotes;
 
-    public Choice() {
+    public ChoiceModel() {
     }
 
-    public Choice(long id, String text, Poll poll, List<Vote> listVotes) {
+    public ChoiceModel(long id, String text, PollModel poll, List<VoteModel> listVotes) {
         this.id = id;
         this.text = text;
         this.poll = poll;
@@ -47,19 +38,19 @@ public class Choice {
         this.text = text;
     }
 
-    public Poll getPoll() {
+    public PollModel getPoll() {
         return poll;
     }
 
-    public void setPoll(Poll poll) {
+    public void setPoll(PollModel poll) {
         this.poll = poll;
     }
 
-    public List<Vote> getListVotes() {
+    public List<VoteModel> getListVotes() {
         return listVotes;
     }
 
-    public void setListVotes(List<Vote> listVotes) {
+    public void setListVotes(List<VoteModel> listVotes) {
         this.listVotes = listVotes;
     }
 }

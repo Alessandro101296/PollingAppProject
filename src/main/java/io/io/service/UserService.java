@@ -1,30 +1,60 @@
 package io.io.service;
 
-import io.io.Exception.ExistingUsernameException;
 import io.io.Mapper.UserMapper;
-import io.io.dto.Request.CreateNewUserRequest;
-import io.io.dto.Response.UserIdResponse;
+import io.io.dto.IdResponse;
+import io.io.dto.UserModelCreateRequest;
+import io.io.dto.UserModel;
+import io.io.dto.UserModelUpdateRequest;
 import io.io.entity.User;
-import io.io.repository.UserRepository;
+import io.io.repository.UserRepo;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
-    private UserMapper userMapper;
+    private final UserRepo userRepo;
 
-    public UserService(UserRepository userRepository,UserMapper userMapper){
-        this.userRepository=userRepository;
-        this.userMapper=userMapper;
+    private final UserMapper userMapper;
+
+
+    public UserService(UserRepo userRepo, UserMapper userMapper) {
+        this.userRepo = userRepo;
+        this.userMapper = userMapper;
     }
 
-    public UserIdResponse createNewUser(CreateNewUserRequest createNewUserRequest) throws ExistingUsernameException {
-        if(userRepository.findByUsername(createNewUserRequest.getUsername()).isPresent()){
-            throw new ExistingUsernameException();
+    public IdResponse createUser(UserModelCreateRequest userModelCreateRequest){
+        return userMapper.userToId(userRepo.save(userMapper.reqToUser(userModelCreateRequest)));
+    }
+
+    public UserModel getUser(long userId){
+        Optional<User> user= userRepo.findById(userId);
+        if(user.isPresent()){
+            return userMapper.userToModel(user.get());
         }
-        User createdUser=userRepository.save(userMapper.NewUserRequestToUser(createNewUserRequest));
-        UserIdResponse response=userMapper.userToUserIdResponse(createdUser);
-        return response;
+        else{
+            return null; /* throw exception*/
+        }
+    }
+    public void updateUser(UserModelUpdateRequest userModelUpdateRequest){
+        Optional<User> user=userRepo.findById(userModelUpdateRequest.getId());
+        if(user.isPresent()){
+            User userRetrivied=user.get();
+            if(userModelUpdateRequest.getUsername()!=null){
+                userRetrivied.setUsername(userModelUpdateRequest.getUsername());
+            }
+            if(userModelUpdateRequest.getName()!=null){
+                userRetrivied.setName(userModelUpdateRequest.getName());
+
+            }
+            if(userModelUpdateRequest.getEmail()!=null){
+                userRetrivied.setEmail(userModelUpdateRequest.getEmail());
+
+            }
+            userRepo.save(userRetrivied);
+        }else{
+            return ; /*throw exception*/
+        }
     }
 }

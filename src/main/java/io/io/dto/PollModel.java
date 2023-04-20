@@ -1,36 +1,26 @@
-package io.io.entity;
-
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+package io.io.dto;
 
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "Poll")
-public class Poll {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PollModel {
+
     private long id;
 
-    @NotBlank
     private String question;
 
-    @OneToMany(mappedBy = "poll")
-    @Size(min=2,max=6)
-    private List<Choice> choiceList;
 
-    @ManyToOne
-    @JoinColumn(name = "userId")
-    private User user;
+    private List<ChoiceModel> choiceList;
+
+
+    private UserModel user;
 
     private Date expirationDate;
 
-    public Poll() {
+    public PollModel() {
     }
 
-    public Poll(long id, String question, List<Choice> choiceList, User user, Date expirationDate) {
+    public PollModel(long id, String question, List<ChoiceModel> choiceList, UserModel user, Date expirationDate) {
         this.id = id;
         this.question = question;
         this.choiceList = choiceList;
@@ -54,19 +44,19 @@ public class Poll {
         this.question = question;
     }
 
-    public List<Choice> getChoiceList() {
+    public List<ChoiceModel> getChoiceList() {
         return choiceList;
     }
 
-    public void setChoiceList(List<Choice> choiceList) {
+    public void setChoiceList(List<ChoiceModel> choiceList) {
         this.choiceList = choiceList;
     }
 
-    public User getUser() {
+    public UserModel getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserModel user) {
         this.user = user;
     }
 
