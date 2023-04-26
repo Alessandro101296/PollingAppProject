@@ -1,5 +1,6 @@
 package io.io.controller;
 
+import io.io.Exception.NoPollException;
 import io.io.Exception.NoUserException;
 import io.io.dto.IdResponse;
 import io.io.dto.PollModel;
@@ -26,8 +27,15 @@ public class PollController {
         return pollService.createPoll(pollModelCreateRequest);
     }
 
+    @GetMapping("/get")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public PollModel getPoll(@RequestParam(value = "poll") long pollId) throws NoPollException {
+        return pollService.getPoll(pollId);
+    }
+
     @GetMapping("/getbyuser")
-    public List<PollModel> findByUser(@RequestParam (value = "user") long userId){
+    public List<PollModel> findByUser(@RequestParam(value = "user") long userId) throws NoUserException {
         return pollService.findByUser(userId);
     }
 

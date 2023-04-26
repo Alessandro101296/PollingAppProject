@@ -1,9 +1,9 @@
 package io.io.controller;
 
-import io.io.dto.CreateChoiceRequest;
+import io.io.Exception.NoPollException;
+import io.io.Exception.NoUserException;
 import io.io.dto.CreateChoicesRequest;
 import io.io.dto.IdListResp;
-import io.io.dto.IdResponse;
 import io.io.service.ChoiceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ public class ChoiceController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public IdListResp createChoices(@RequestBody CreateChoicesRequest request){
+    public IdListResp createChoices(@RequestBody CreateChoicesRequest request) throws NoUserException, NoPollException {
         return choiceService.createChoices(request);
     }
 

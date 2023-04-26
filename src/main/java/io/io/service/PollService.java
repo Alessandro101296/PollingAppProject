@@ -1,5 +1,6 @@
 package io.io.service;
 
+import io.io.Exception.NoPollException;
 import io.io.Exception.NoUserException;
 import io.io.Mapper.PollMapper;
 import io.io.dto.IdResponse;
@@ -28,15 +29,19 @@ public class PollService {
     }
 
     public IdResponse createPoll(PollModelCreateRequest pollModelCreateRequest) throws NoUserException {
-        /* add user control*/
         User user=userRepo.findById(pollModelCreateRequest.getUserId()).orElseThrow(()->new NoUserException());
         Poll createdPoll=pollMapper.reqCreatetoPoll(pollModelCreateRequest);
         createdPoll.setUser(user);
         return pollMapper.pollToId(pollRepo.save(createdPoll));
     }
-    public List<PollModel> findByUser(long userId){
-        /* add user control*/
-        User user=userRepo.findById(userId).get();
+    public PollModel getPoll(long pollId) throws NoPollException {
+        Poll poll=pollRepo.findById(pollId).orElseThrow(()->new NoPollException());
+        PollModel response= pollMapper.pollToModel(poll);
+        response.setUserId(poll.getUser().getId());
+        return response;
+    }
+    public List<PollModel> findByUser(long userId) throws NoUserException {
+        User user=userRepo.findById(userId).orElseThrow(()->new NoUserException());
         return pollMapper.listPollToListModel(user.getPollList());
 
     }

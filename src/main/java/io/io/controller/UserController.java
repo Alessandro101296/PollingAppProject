@@ -1,5 +1,6 @@
 package io.io.controller;
 
+import io.io.Exception.NoUserException;
 import io.io.dto.IdResponse;
 import io.io.dto.UserModelCreateRequest;
 import io.io.dto.UserModel;
@@ -20,7 +21,7 @@ public class UserController {
     @GetMapping("/get")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserModel getUser(@RequestParam (value = "id")long userId){
+    public UserModel getUser(@RequestParam (value = "id")long userId) throws NoUserException {
         return userService.getUser(userId);
     }
 
@@ -33,7 +34,7 @@ public class UserController {
     }
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.OK)
-    public void updateUser(@RequestBody UserModelUpdateRequest userModelUpdateRequest){
+    public void updateUser(@RequestBody UserModelUpdateRequest userModelUpdateRequest) throws NoUserException {
         userService.updateUser(userModelUpdateRequest);
     }
 }

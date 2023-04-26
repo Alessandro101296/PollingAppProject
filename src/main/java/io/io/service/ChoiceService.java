@@ -1,5 +1,7 @@
 package io.io.service;
 
+import io.io.Exception.NoPollException;
+import io.io.Exception.NoUserException;
 import io.io.Mapper.ChoiceMapper;
 import io.io.dto.ChoiceModel;
 import io.io.dto.CreateChoicesRequest;
@@ -33,20 +35,16 @@ public class ChoiceService {
     }
 
 
-    public IdListResp createChoices(CreateChoicesRequest request){
+    public IdListResp createChoices(CreateChoicesRequest request) throws NoUserException, NoPollException {
+        /*aggiungi controllo che tutti i text delle choice devono essere diversi*/
         List<Long> choicesId=new ArrayList<>();
-        Optional<User> user=userRepo.findById(request.getUserId());
-        if(user.isPresent()){
-            Optional<Poll> poll=pollRepo.findById(request.getPollId());
-            if(poll.isPresent()){
-                if(poll.get().getUser()==user.get()){
-                    Poll retriviedPoll=poll.get();
-                    for(ChoiceModel choiceModel : request.getChoiceModelList()){
-                        Choice choice=choiceMapper.modelToChoice(choiceModel);
-                        choice.setPoll(retriviedPoll);
-                        choicesId.add(choiceRepo.save(choice).getId());
-                    }
-                }
+        User user=userRepo.findById(request.getUserId()).orElseThrow(()-> new NoUserException());
+        Poll poll=pollRepo.findById(request.getPollId()).orElseThrow(()-> new NoPollException());
+        if(poll.getUser()==user){
+            for(ChoiceModel choiceModel : request.getChoiceModelList()) {
+                Choice choice = choiceMapper.modelToChoice(choiceModel);
+                choice.setPoll(poll);
+                choicesId.add(choiceRepo.save(choice).getId());
             }
         }
         return new IdListResp(choicesId);

@@ -16,8 +16,8 @@ public interface PollMapper {
     Poll reqCreatetoPoll(PollModelCreateRequest pollModelCreateRequest);
     IdResponse pollToId(Poll poll);
 
-    @Mapping(target = "user",ignore = true)
     PollModel pollToModel(Poll poll);
+
 
     List<PollModel> listPollToListModel(List<Poll> pollList);
 

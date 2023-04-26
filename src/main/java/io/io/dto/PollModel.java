@@ -12,19 +12,18 @@ public class PollModel {
 
     private List<ChoiceModel> choiceList;
 
-
-    private UserModel user;
+    private long userId;
 
     private Date expirationDate;
 
     public PollModel() {
     }
 
-    public PollModel(long id, String question, List<ChoiceModel> choiceList, UserModel user, Date expirationDate) {
+    public PollModel(long id, String question, List<ChoiceModel> choiceList, long userId, Date expirationDate) {
         this.id = id;
         this.question = question;
         this.choiceList = choiceList;
-        this.user = user;
+        this.userId = userId;
         this.expirationDate = expirationDate;
     }
 
@@ -52,12 +51,12 @@ public class PollModel {
         this.choiceList = choiceList;
     }
 
-    public UserModel getUser() {
-        return user;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUser(UserModel user) {
-        this.user = user;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public Date getExpirationDate() {
