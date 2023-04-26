@@ -8,17 +8,15 @@ public class ChoiceModel {
 
     private String text;
 
-    private PollModel poll;
 
     private List<VoteModel> listVotes;
 
     public ChoiceModel() {
     }
 
-    public ChoiceModel(long id, String text, PollModel poll, List<VoteModel> listVotes) {
+    public ChoiceModel(long id, String text,  List<VoteModel> listVotes) {
         this.id = id;
         this.text = text;
-        this.poll = poll;
         this.listVotes = listVotes;
     }
 
@@ -36,14 +34,6 @@ public class ChoiceModel {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public PollModel getPoll() {
-        return poll;
-    }
-
-    public void setPoll(PollModel poll) {
-        this.poll = poll;
     }
 
     public List<VoteModel> getListVotes() {
