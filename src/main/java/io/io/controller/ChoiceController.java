@@ -19,7 +19,6 @@ public class ChoiceController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
     public IdListResp createChoices(@RequestBody CreateChoicesRequest request) throws NoUserException, NoPollException {
         return choiceService.createChoices(request);
     }

@@ -40,7 +40,7 @@ public class ChoiceService {
         List<Long> choicesId=new ArrayList<>();
         User user=userRepo.findById(request.getUserId()).orElseThrow(()-> new NoUserException());
         Poll poll=pollRepo.findById(request.getPollId()).orElseThrow(()-> new NoPollException());
-        if(poll.getUser()==user){
+        if(poll.getUser().equals(user)){
             for(ChoiceModel choiceModel : request.getChoiceModelList()) {
                 Choice choice = choiceMapper.modelToChoice(choiceModel);
                 choice.setPoll(poll);
@@ -49,5 +49,6 @@ public class ChoiceService {
         }
         return new IdListResp(choicesId);
     }
+
 
 }

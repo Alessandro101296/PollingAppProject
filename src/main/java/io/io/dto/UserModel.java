@@ -14,20 +14,15 @@ public class UserModel {
 
     private String name;
 
-    private List<PollModel> pollList;
-
-    private List<VoteModel> voteList;
 
     public UserModel() {
     }
 
-    public UserModel(long id, String username, String email, String name, List<PollModel> pollList, List<VoteModel> voteList) {
+    public UserModel(long id, String username, String email, String name) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.name = name;
-        this.pollList = pollList;
-        this.voteList = voteList;
     }
 
     public long getId() {
@@ -60,21 +55,5 @@ public class UserModel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<PollModel> getPollList() {
-        return pollList;
-    }
-
-    public void setPollList(List<PollModel> pollList) {
-        this.pollList = pollList;
-    }
-
-    public List<VoteModel> getVoteList() {
-        return voteList;
-    }
-
-    public void setVoteList(List<VoteModel> voteList) {
-        this.voteList = voteList;
     }
 }

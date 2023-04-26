@@ -26,6 +26,7 @@ public class UserService {
     }
 
     public IdResponse createUser(UserModelCreateRequest userModelCreateRequest){
+        /*gestire eccezione con i natural id*/
         return userMapper.userToId(userRepo.save(userMapper.reqToUser(userModelCreateRequest)));
     }
 
@@ -47,5 +48,8 @@ public class UserService {
 
         }
         userRepo.save(user);
+    }
+    public void removeUser(){
+
     }
 }

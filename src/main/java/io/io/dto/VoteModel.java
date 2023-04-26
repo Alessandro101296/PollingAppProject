@@ -1,21 +1,32 @@
 package io.io.dto;
 
+import io.io.entity.VoteId;
+
 public class VoteModel {
 
-    private long id;
-
+    private VoteId id;
+    private ChoiceModel choice;
     public VoteModel() {
     }
 
-    public VoteModel(long id) {
+    public VoteModel(VoteId id, ChoiceModel choice) {
         this.id = id;
+        this.choice = choice;
     }
 
-    public long getId() {
+    public VoteId getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(VoteId id) {
         this.id = id;
+    }
+
+    public ChoiceModel getChoice() {
+        return choice;
+    }
+
+    public void setChoice(ChoiceModel choice) {
+        this.choice = choice;
     }
 }

@@ -13,8 +13,6 @@ public interface UserMapper  {
 
     IdResponse userToId(User user);
 
-    @Mapping(target = "voteList",ignore = true)
-    @Mapping(target = "pollList",ignore = true)
     UserModel userToModel(User user);
 
     User reqToUser(UserModelCreateRequest userModelCreateRequest);

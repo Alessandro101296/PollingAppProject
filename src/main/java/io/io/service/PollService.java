@@ -36,14 +36,12 @@ public class PollService {
     }
     public PollModel getPoll(long pollId) throws NoPollException {
         Poll poll=pollRepo.findById(pollId).orElseThrow(()->new NoPollException());
-        PollModel response= pollMapper.pollToModel(poll);
-        response.setUserId(poll.getUser().getId());
-        return response;
+        return pollMapper.pollToModel(poll);
+
     }
     public List<PollModel> findByUser(long userId) throws NoUserException {
         User user=userRepo.findById(userId).orElseThrow(()->new NoUserException());
         return pollMapper.listPollToListModel(user.getPollList());
-
     }
 
 

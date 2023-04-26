@@ -1,9 +1,11 @@
 package io.io.controller;
 
 import io.io.Exception.NoChoiceException;
+import io.io.Exception.NoPollException;
 import io.io.Exception.NoUserException;
 import io.io.dto.IdResponse;
 import io.io.dto.VoteRequest;
+import io.io.entity.VoteId;
 import io.io.service.VoteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +20,7 @@ public class VoteController {
     }
     @RequestMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public IdResponse addVote(@RequestBody VoteRequest request) throws NoUserException, NoChoiceException {
+    public VoteId addVote(@RequestBody VoteRequest request) throws NoUserException, NoChoiceException, NoPollException {
         return voteService.votePoll(request);
     }
 }

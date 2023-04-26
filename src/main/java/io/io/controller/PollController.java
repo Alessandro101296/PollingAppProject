@@ -22,14 +22,12 @@ public class PollController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
     public IdResponse createPoll(@RequestBody PollModelCreateRequest pollModelCreateRequest) throws NoUserException {
         return pollService.createPoll(pollModelCreateRequest);
     }
 
     @GetMapping("/get")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @ResponseBody
     public PollModel getPoll(@RequestParam(value = "poll") long pollId) throws NoPollException {
         return pollService.getPoll(pollId);
     }

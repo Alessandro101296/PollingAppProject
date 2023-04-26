@@ -25,19 +25,17 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Poll> pollList;
-    @OneToMany(mappedBy = "user")
-    private List<Vote> voteList;
+
 
     public User() {
     }
 
-    public User(long id, String username, String email, String name, List<Poll> pollList, List<Vote> voteList) {
+    public User(long id, String username, String email, String name, List<Poll> pollList) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.name = name;
         this.pollList = pollList;
-        this.voteList = voteList;
     }
 
     public long getId() {
@@ -80,11 +78,17 @@ public class User {
         this.pollList = pollList;
     }
 
-    public List<Vote> getVoteList() {
-        return voteList;
-    }
 
-    public void setVoteList(List<Vote> voteList) {
-        this.voteList = voteList;
+    @Override
+    public boolean equals(Object user){
+        if (user == this) {
+            return true;
+        }
+        if(!(user instanceof User)){
+            return false;
+        }
+        User u=(User)user;
+        return (id==u.getId())&&(username.equals(u.getUsername()))&&(email.equals(u.getEmail()))&&(name.equals(u.getName()));
+
     }
 }

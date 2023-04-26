@@ -16,6 +16,7 @@ public interface PollMapper {
     Poll reqCreatetoPoll(PollModelCreateRequest pollModelCreateRequest);
     IdResponse pollToId(Poll poll);
 
+    @Mapping(target = "userId",expression = "java(poll.getUser().getId())")
     PollModel pollToModel(Poll poll);
 
 

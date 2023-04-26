@@ -20,7 +20,6 @@ public class UserController {
 
     @GetMapping("/get")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public UserModel getUser(@RequestParam (value = "id")long userId) throws NoUserException {
         return userService.getUser(userId);
     }
@@ -28,7 +27,6 @@ public class UserController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
     public IdResponse createUser(@RequestBody UserModelCreateRequest userModelCreateRequest){
         return userService.createUser(userModelCreateRequest);
     }

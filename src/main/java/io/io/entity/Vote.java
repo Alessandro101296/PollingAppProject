@@ -5,32 +5,27 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "Vote")
 public class Vote {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @EmbeddedId
+    private VoteId id;
 
     @ManyToOne
     @JoinColumn(name = "choiceid")
     private Choice choice;
 
-    @ManyToOne
-    @JoinColumn(name = "userid")
-    private User user;
 
     public Vote() {
     }
 
-    public Vote(long id, Choice choice, User user) {
+    public Vote(VoteId id, Choice choice) {
         this.id = id;
         this.choice = choice;
-        this.user = user;
     }
 
-    public long getId() {
+    public VoteId getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(VoteId id) {
         this.id = id;
     }
 
@@ -42,11 +37,5 @@ public class Vote {
         this.choice = choice;
     }
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
