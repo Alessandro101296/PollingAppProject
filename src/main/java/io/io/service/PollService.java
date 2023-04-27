@@ -1,60 +1,63 @@
 package io.io.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.io.Exception.NonExistingUser;
+import io.io.Exception.NoPollException;
+import io.io.Exception.NoUserException;
+import io.io.Mapper.PollChoicesReturnType;
 import io.io.Mapper.PollMapper;
-import io.io.dto.Request.CreateNewPollRequest;
-import io.io.dto.Response.PollIdResponse;
+import io.io.dto.Response.IdResponse;
+import io.io.dto.Response.PollModel;
+import io.io.dto.Request.PollModelCreateRequest;
 import io.io.entity.Choice;
 import io.io.entity.Poll;
 import io.io.entity.User;
 import io.io.repository.ChoiceRepository;
 import io.io.repository.PollRepository;
 import io.io.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+
 @Service
 public class PollService {
-    private UserRepository userRepository;
-    private PollRepository pollRepository;
-    private ChoiceRepository choiceRepository;
-    private PollMapper pollMapper;
-    public PollService(UserRepository userRepository,PollRepository pollRepository,ChoiceRepository choiceRepository,PollMapper pollMapper){
-        this.userRepository=userRepository;
-        this.pollRepository=pollRepository;
-        this.choiceRepository=choiceRepository;
-        this.pollMapper=pollMapper;
+
+    private final PollRepository pollRepository;
+    private final UserRepository userRepository;
+    private final ChoiceRepository choiceRepository;
+    private final PollMapper pollMapper;
+
+
+    public PollService(PollRepository pollRepository, UserRepository userRepository, PollMapper pollMapper, ChoiceRepository choiceRepository) {
+        this.pollRepository = pollRepository;
+        this.userRepository = userRepository;
+        this.pollMapper = pollMapper;
+        this.choiceRepository = choiceRepository;
     }
 
-    public PollIdResponse createNewPoll(CreateNewPollRequest pollRequest) throws NonExistingUser {
-        Optional<User> referencedUser=userRepository.findByUsername(pollRequest.getUsername());
-        if(referencedUser.isPresent()){
-            Poll poll=pollMapper.NewPollRequestToPoll(pollRequest);
-            poll.setUser(referencedUser.get());
-            Poll createdPoll=pollRepository.save(poll);
-            PollIdResponse response=pollMapper.pollToPollIdResponse(createdPoll);
-            return response;
+    @Transactional
+    public IdResponse createPoll(PollModelCreateRequest pollModelCreateRequest) throws NoUserException {
+        User user = userRepository.findById(pollModelCreateRequest.getPoll().getUser()).orElseThrow(() -> new NoUserException());
+        PollChoicesReturnType pollChoice = pollMapper.reqCreatetoPoll(pollModelCreateRequest);
+        Poll poll = pollChoice.getPoll();
+        poll.setUser(user);
+        Poll pollSaved = pollRepository.save(poll);
+        for (Choice choice : pollChoice.getChoice()) {
+            choice.setPoll(pollSaved);
+            choiceRepository.save(choice);
         }
-        else{
-            throw new NonExistingUser();
-        }
+        return new IdResponse(pollSaved.getId());
+    }
+
+    public PollModel getPoll(long pollId) throws NoPollException {
+        Poll poll = pollRepository.findById(pollId).orElseThrow(() -> new NoPollException());
+        return pollMapper.pollToModel(poll);
 
     }
-    public List<Poll> findPollByUser(long userId) {
-        ObjectMapper mapper=new ObjectMapper();
-        User user=userRepository.findById(userId).get();
-        List<Poll> pollList= user.getPollList();
-        return pollList;
+
+    public List<PollModel> findByUser(long userId) throws NoUserException {
+        User user = userRepository.findById(userId).orElseThrow(() -> new NoUserException());
+        return pollMapper.listPollToListModel(user.getPollList());
     }
-    public List<Poll> findPollByExpirationTime(int numberOfDays){
-        Date instant=Date.from(Instant.now().plus(Duration.ofDays(numberOfDays)));
-        List<Poll> pollList=pollRepository.findByExpirationDateTimeIsLessThan(instant).get();
-        return pollList;
-    }
+
 
 }

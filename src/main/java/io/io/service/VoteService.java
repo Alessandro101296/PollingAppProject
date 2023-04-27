@@ -1,36 +1,47 @@
 package io.io.service;
 
-import io.io.dto.Request.AddNewVoteRequest;
-import io.io.entity.Choice;
-import io.io.entity.Poll;
-import io.io.entity.User;
-import io.io.entity.Vote;
+
+import io.io.Exception.ExpiredPollException;
+import io.io.Exception.NoChoiceException;
+import io.io.Exception.NoPollException;
+import io.io.Exception.NoUserException;
+import io.io.dto.Request.VoteRequest;
+import io.io.entity.*;
 import io.io.repository.ChoiceRepository;
 import io.io.repository.PollRepository;
 import io.io.repository.UserRepository;
 import io.io.repository.VoteRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.Date;
+
 @Service
 public class VoteService {
-    private UserRepository userRepository;
-    private PollRepository pollRepository;
-    private ChoiceRepository choiceRepository;
+
     private VoteRepository voteRepository;
 
-    public VoteService(UserRepository userRepository, PollRepository pollRepository, ChoiceRepository choiceRepository, VoteRepository voteRepository){
-        this.choiceRepository=choiceRepository;
-        this.userRepository=userRepository;
-        this.pollRepository=pollRepository;
-        this.voteRepository=voteRepository;
+    private UserRepository userRepository;
+    private PollRepository pollRepository;
+
+    private ChoiceRepository choiceRepository;
+    public VoteService(VoteRepository voteRepository, UserRepository userRepository, ChoiceRepository choiceRepository, PollRepository pollRepository){
+        this.voteRepository = voteRepository;
+        this.choiceRepository = choiceRepository;
+        this.pollRepository = pollRepository;
+        this.userRepository = userRepository;
     }
 
-    public void addVote(AddNewVoteRequest voteRequest){
-        User user=userRepository.findById(voteRequest.getUserid()).get();
-        Poll poll=pollRepository.findById(voteRequest.getPollid()).get();
-        Choice choice=choiceRepository.findById(voteRequest.getChoiceid()).get();
-        Vote newVote=new Vote(poll,choice,user);
-        voteRepository.save(newVote);
+    public VoteId votePoll(VoteRequest voteRequest) throws NoChoiceException, NoUserException, NoPollException, ExpiredPollException {
+        /* Si può votare solo se il sondaggio è ancora aperto*/
+        Choice choice= choiceRepository.findById(voteRequest.getChoiceId()).orElseThrow(()->new NoChoiceException());
+        User user= userRepository.findById(voteRequest.getUserId()).orElseThrow(()-> new NoUserException());
+        Poll poll= pollRepository.findById(voteRequest.getPollId()).orElseThrow(()-> new NoPollException());
+        if(Date.from(Instant.now()).after(poll.getExpirationDate())) {
+            throw new ExpiredPollException();
+        }
+        VoteId voteId=new VoteId(user,poll);
+        Vote vote=new Vote(voteId,choice);
+        return voteRepository.save(vote).getId();
     }
-
 }

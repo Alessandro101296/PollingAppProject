@@ -1,37 +1,35 @@
 package io.io.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Choises")
+@Table(name = "Choice",uniqueConstraints = {@UniqueConstraint(columnNames = {"text","pollId"})})
 public class Choice {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank
+
     private String text;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonBackReference
+
+    @ManyToOne
+    @JoinColumn(name = "pollId")
     private Poll poll;
+
     @OneToMany(mappedBy = "choice")
-    @Fetch(FetchMode.SELECT)
-    @JsonIgnore
-    private List<Vote> votes=new ArrayList<>();
+    private List<Vote> listVotes;
+
     public Choice() {
     }
 
-    public Choice(String text) {
+    public Choice(long id, String text, Poll poll, List<Vote> listVotes) {
+        this.id = id;
         this.text = text;
+        this.poll = poll;
+        this.listVotes = listVotes;
     }
 
     public long getId() {
@@ -58,5 +56,11 @@ public class Choice {
         this.poll = poll;
     }
 
+    public List<Vote> getListVotes() {
+        return listVotes;
+    }
 
+    public void setListVotes(List<Vote> listVotes) {
+        this.listVotes = listVotes;
+    }
 }

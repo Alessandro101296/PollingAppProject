@@ -1,77 +1,49 @@
 package io.io.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.NaturalId;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "User")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(unique = true)
     @NotBlank
-    @NaturalId
-    private String name;
-
-
-    @NotBlank
-    @NaturalId
     private String username;
 
-
-    @NaturalId
+    @Column(unique = true)
     @NotBlank
     private String email;
 
-    @NotBlank
-    private String password;
+    private String name;
 
+    @OneToMany(mappedBy = "user")
+    private List<Poll> pollList;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    @JsonManagedReference
-    private List<Poll> pollList = new ArrayList();
-
-    @OneToMany(fetch=FetchType.LAZY,mappedBy = "user")
-    @JsonIgnore
-    private List<Vote> votes=new ArrayList<>();
 
     public User() {
-
     }
 
-    public User(String name, String username, String email, String password) {
-        this.name = name;
+    public User(long id, String username, String email, String name, List<Poll> pollList) {
+        this.id = id;
         this.username = username;
         this.email = email;
-        this.password = password;
+        this.name = name;
+        this.pollList = pollList;
     }
 
-    public List<Poll> getPollList() {
-        return pollList;
-    }
     public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getUsername() {
@@ -90,12 +62,33 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getName() {
+        return name;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public List<Poll> getPollList() {
+        return pollList;
+    }
+
+    public void setPollList(List<Poll> pollList) {
+        this.pollList = pollList;
+    }
+
+
+    @Override
+    public boolean equals(Object user){
+        if (user == this) {
+            return true;
+        }
+        if(!(user instanceof User)){
+            return false;
+        }
+        User u=(User)user;
+        return (id==u.getId())&&(username.equals(u.getUsername()))&&(email.equals(u.getEmail()))&&(name.equals(u.getName()));
+
+    }
 }
