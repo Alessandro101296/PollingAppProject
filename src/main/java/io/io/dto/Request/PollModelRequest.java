@@ -1,4 +1,4 @@
-package io.io.dto;
+package io.io.dto.Request;
 
 import jakarta.validation.constraints.NotBlank;
 

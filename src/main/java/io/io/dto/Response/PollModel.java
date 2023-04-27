@@ -1,4 +1,4 @@
-package io.io.dto;
+package io.io.dto.Response;
 
 import java.util.Date;
 import java.util.List;

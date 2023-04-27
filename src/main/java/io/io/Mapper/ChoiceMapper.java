@@ -1,9 +1,8 @@
 package io.io.Mapper;
 
-import io.io.dto.ChoiceModel;
+import io.io.dto.Response.ChoiceModel;
 import io.io.entity.Choice;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 

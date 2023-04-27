@@ -1,5 +1,6 @@
-package io.io.dto;
+package io.io.dto.Request;
 
+import io.io.dto.Response.ChoiceModel;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;

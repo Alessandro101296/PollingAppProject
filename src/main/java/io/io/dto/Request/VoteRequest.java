@@ -1,4 +1,4 @@
-package io.io.dto;
+package io.io.dto.Request;
 
 public class VoteRequest {
 

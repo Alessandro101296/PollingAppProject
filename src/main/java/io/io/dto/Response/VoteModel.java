@@ -1,4 +1,4 @@
-package io.io.dto;
+package io.io.dto.Response;
 
 import io.io.entity.VoteId;
 

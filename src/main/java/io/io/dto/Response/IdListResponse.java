@@ -1,11 +1,11 @@
-package io.io.dto;
+package io.io.dto.Response;
 
 import java.util.List;
 
-public class IdListResp {
+public class IdListResponse {
     private List<Long> ids;
 
-    public IdListResp(List<Long> ids) {
+    public IdListResponse(List<Long> ids) {
         this.ids = ids;
     }
 

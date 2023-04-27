@@ -1,4 +1,4 @@
-package io.io.dto;
+package io.io.dto.Response;
 
 public class IdResponse {
     private long id;

@@ -1,10 +1,10 @@
 package io.io.controller;
 
 import io.io.Exception.NoUserException;
-import io.io.dto.IdResponse;
-import io.io.dto.UserModelCreateRequest;
-import io.io.dto.UserModel;
-import io.io.dto.UserModelUpdateRequest;
+import io.io.dto.Response.IdResponse;
+import io.io.dto.Request.UserModelCreateRequest;
+import io.io.dto.Response.UserModel;
+import io.io.dto.Request.UserModelUpdateRequest;
 import io.io.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

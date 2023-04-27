@@ -2,9 +2,9 @@ package io.io.controller;
 
 import io.io.Exception.NoPollException;
 import io.io.Exception.NoUserException;
-import io.io.dto.IdResponse;
-import io.io.dto.PollModel;
-import io.io.dto.PollModelCreateRequest;
+import io.io.dto.Response.IdResponse;
+import io.io.dto.Response.PollModel;
+import io.io.dto.Request.PollModelCreateRequest;
 import io.io.service.PollService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +28,12 @@ public class PollController {
 
     @GetMapping("/get")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public PollModel getPoll(@RequestParam(value = "poll") long pollId) throws NoPollException {
+    public PollModel getPoll(@RequestParam(value = "pollId") long pollId) throws NoPollException {
         return pollService.getPoll(pollId);
     }
 
     @GetMapping("/getbyuser")
-    public List<PollModel> findByUser(@RequestParam(value = "user") long userId) throws NoUserException {
+    public List<PollModel> findByUser(@RequestParam(value = "userId") long userId) throws NoUserException {
         return pollService.findByUser(userId);
     }
 

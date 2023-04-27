@@ -1,6 +1,9 @@
 package io.io.Mapper;
 
-import io.io.dto.*;
+import io.io.dto.Request.PollModelCreateRequest;
+import io.io.dto.Response.ChoiceModel;
+import io.io.dto.Response.IdResponse;
+import io.io.dto.Response.PollModel;
 import io.io.entity.Choice;
 import io.io.entity.Poll;
 import org.mapstruct.Mapper;

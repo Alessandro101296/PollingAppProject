@@ -1,11 +1,6 @@
-package io.io.dto;
+package io.io.dto.Request;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.List;
-
-
-public class UserModel {
+public class UserModelUpdateRequest {
     private long id;
 
     private String username;
@@ -14,11 +9,10 @@ public class UserModel {
 
     private String name;
 
-
-    public UserModel() {
+    public UserModelUpdateRequest() {
     }
 
-    public UserModel(long id, String username, String email, String name) {
+    public UserModelUpdateRequest(long id, String username, String email, String name) {
         this.id = id;
         this.username = username;
         this.email = email;
