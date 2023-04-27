@@ -1,5 +1,7 @@
 package io.io.dto;
 
+import jakarta.validation.constraints.Size;
+
 import java.util.List;
 
 public class CreateChoicesRequest {
@@ -7,6 +9,7 @@ public class CreateChoicesRequest {
     private long pollId;
     private long userId;
 
+    @Size(min=2,max=5)
     private List<ChoiceModel> choiceModelList;
 
     public CreateChoicesRequest(long pollId, long userId, List<ChoiceModel> choiceModelList) {

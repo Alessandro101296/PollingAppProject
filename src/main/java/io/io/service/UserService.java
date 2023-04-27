@@ -49,7 +49,5 @@ public class UserService {
         }
         userRepo.save(user);
     }
-    public void removeUser(){
 
-    }
 }

@@ -5,12 +5,13 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "Choice")
+@Table(name = "Choice",uniqueConstraints = {@UniqueConstraint(columnNames = {"text","pollId"})})
 public class Choice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
 
     private String text;
 

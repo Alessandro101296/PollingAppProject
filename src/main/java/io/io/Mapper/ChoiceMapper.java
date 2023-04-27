@@ -10,5 +10,7 @@ import org.mapstruct.Mapping;
 public interface ChoiceMapper {
 
     Choice modelToChoice(ChoiceModel choiceModel);
+
+    ChoiceModel choiceToModel(Choice choice);
 }
 
