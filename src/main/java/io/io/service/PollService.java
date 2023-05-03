@@ -58,6 +58,9 @@ public class PollService {
         User user = userRepository.findById(userId).orElseThrow(() -> new NoUserException());
         return pollMapper.listPollToListModel(user.getPollList());
     }
+    public void removePoll(){
+        
+    }
 
 
 }

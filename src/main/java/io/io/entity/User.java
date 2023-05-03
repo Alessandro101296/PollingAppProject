@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.NaturalId;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "User")
@@ -22,19 +23,25 @@ public class User {
     private String email;
 
     private String name;
+    private String password;
 
     @OneToMany(mappedBy = "user")
     private List<Poll> pollList;
+
+    @ManyToMany
+    @JoinColumn(name = "userRole")
+    private Set<Role> roles;
 
 
     public User() {
     }
 
-    public User(long id, String username, String email, String name, List<Poll> pollList) {
+    public User(long id, String username, String email, String name, String password, List<Poll> pollList) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.name = name;
+        this.password = password;
         this.pollList = pollList;
     }
 
@@ -78,6 +85,21 @@ public class User {
         this.pollList = pollList;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     @Override
     public boolean equals(Object user){
