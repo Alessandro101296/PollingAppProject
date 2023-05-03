@@ -1,5 +1,6 @@
 package io.io.Mapper;
 
+import io.io.dto.Request.SignUpRequest;
 import io.io.dto.Response.IdResponse;
 import io.io.dto.Request.UserModelCreateRequest;
 import io.io.dto.Response.UserModel;
@@ -17,4 +18,6 @@ public interface UserMapper  {
     User reqToUser(UserModelCreateRequest userModelCreateRequest);
 
     User reqUpdateToUser(UserModelUpdateRequest userModelUpdateRequest);
+
+    User signUnToUser(SignUpRequest sign);
 }

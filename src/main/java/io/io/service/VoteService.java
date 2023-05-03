@@ -33,7 +33,6 @@ public class VoteService {
     }
 
     public VoteId votePoll(VoteRequest voteRequest) throws NoChoiceException, NoUserException, NoPollException, ExpiredPollException {
-        /* Si può votare solo se il sondaggio è ancora aperto*/
         Choice choice= choiceRepository.findById(voteRequest.getChoiceId()).orElseThrow(()->new NoChoiceException());
         User user= userRepository.findById(voteRequest.getUserId()).orElseThrow(()-> new NoUserException());
         Poll poll= pollRepository.findById(voteRequest.getPollId()).orElseThrow(()-> new NoPollException());
@@ -43,5 +42,8 @@ public class VoteService {
         VoteId voteId=new VoteId(user,poll);
         Vote vote=new Vote(voteId,choice);
         return voteRepository.save(vote).getId();
+    }
+    public void removeVote(){
+
     }
 }
